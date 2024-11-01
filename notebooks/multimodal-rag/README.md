@@ -2,7 +2,7 @@
 
 Constructing a RAG pipeline for text is relatively straightforward, thanks to the tools developed for parsing, indexing, and retrieving text data. However, adapting RAG models for video content presents a greater challenge. Videos combine visual, auditory, and textual elements, requiring more processing power and sophisticated video pipelines.
 
-To build a truly multimodal search for videos, you need to work with different modalities of a video like spoken content, visual. In this notebook, we showcase a Multimodal RAG pipeline designed for video analytics. It utilizes Whisper model to convet spoken content to text, CLIP model to generate multimodal embeddings, and Vison Language model (VLM) to process retrieved images and text messages. The following picture illustrates how this pipeline is working.
+To build a truly multimodal search for videos, you need to work with different modalities of a video like spoken content, visual. In this notebook, we showcase a Multimodal RAG pipeline designed for video analytics. It utilizes Whisper model to convert spoken content to text, CLIP model to generate multimodal embeddings, and Vision Language model (VLM) to process retrieved images and text messages. The following picture illustrates how this pipeline is working.
 
 ![Multimodal RAG](https://github.com/user-attachments/assets/baef4914-5c07-432c-9363-1a0cb5944b09)
 

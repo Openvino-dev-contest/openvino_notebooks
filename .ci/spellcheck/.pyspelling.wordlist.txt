@@ -963,6 +963,7 @@ VITS
 vitt
 VL
 vl
+VLM
 VLModel
 VM
 Vladlen
@@ -1007,6 +1008,7 @@ YOLOv
 yolov
 Youri
 youri
+YouTube
 ZavyChromaXL
 Zongyuan
 ZeroScope
