@@ -17,8 +17,6 @@ from PIL import Image
 from transformers import AutoProcessor, AutoTokenizer
 from ov_phi3_vision_helper import OvPhi3Vision
 
-DEFAULT_MULTIMODAL_MODEL = "microsoft/Phi-3.5-vision-instruct"
-
 
 class OpenVINOPhi3MultiModal(MultiModalLLM):
     """
@@ -27,16 +25,13 @@ class OpenVINOPhi3MultiModal(MultiModalLLM):
     """
 
     model_id_or_path: str = Field(
-        default=DEFAULT_MULTIMODAL_MODEL,
         description="The model id or local path of the Hugging Face multi-modal model to use.",
     )
     device: str = Field(
         default="auto",
         description="The device to run the model on.",
     )
-    trust_remote_code: bool = Field(
-        default=True, description="Whether to trust remote code when loading the model."
-    )
+    trust_remote_code: bool = Field(default=True, description="Whether to trust remote code when loading the model.")
     context_window: int = Field(
         default=DEFAULT_CONTEXT_WINDOW,
         description="The maximum number of context tokens for the model.",
@@ -69,9 +64,7 @@ class OpenVINOPhi3MultiModal(MultiModalLLM):
             device=self.device,
         )
         # Load the processor (for handling text and image inputs)
-        self._processor = AutoProcessor.from_pretrained(
-            self.model_id_or_path, trust_remote_code=self.trust_remote_code
-        )
+        self._processor = AutoProcessor.from_pretrained(self.model_id_or_path, trust_remote_code=self.trust_remote_code)
         self._tokenizer = AutoTokenizer.from_pretrained(self.model_id_or_path)
 
         self._messages_to_prompt = messages_to_prompt or self._prepare_messages
@@ -91,22 +84,20 @@ class OpenVINOPhi3MultiModal(MultiModalLLM):
         )
 
     # each unique model will override it
-    def _prepare_messages(
-        self, messages: Sequence[ChatMessage], image_documents: Sequence[ImageDocument]
-    ) -> Dict[str, Any]:
+    def _prepare_messages(self, messages: Sequence[ChatMessage], image_documents: Sequence[ImageDocument]) -> Dict[str, Any]:
         """
         Prepares the input messages and images.
         """
         images = []
-        placeholder = "" 
-        
+        placeholder = ""
+
         for i, img_doc in enumerate(image_documents, start=1):
             images.append(Image.open(img_doc.image_path))
             placeholder += f"<|image_{i}|>\n"
         conversation = [
-            {"role": "user", "content":  placeholder + messages[0].content},
+            {"role": "user", "content": placeholder + messages[0].content},
         ]
-        
+
         prompt = self._tokenizer.apply_chat_template(conversation, tokenize=False, add_generation_prompt=True)
 
         inputs = self._processor(prompt, images, return_tensors="pt")
@@ -122,42 +113,27 @@ class OpenVINOPhi3MultiModal(MultiModalLLM):
             max_new_tokens=self.max_new_tokens,
             **self.generate_kwargs,
         )
-        generated_ids = [
-            output_ids[len(input_ids) :]
-            for input_ids, output_ids in zip(prepared_inputs["input_ids"], output_ids)
-        ]
-        output_text = self._processor.batch_decode(
-            generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
-        )
+        generated_ids = [output_ids[len(input_ids) :] for input_ids, output_ids in zip(prepared_inputs["input_ids"], output_ids)]
+        output_text = self._processor.batch_decode(generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True)
         return output_text[0]
 
     # some models will override it, some won't
-    def complete(
-        self, prompt: str, image_documents: Sequence[ImageDocument], **kwargs: Any
-    ) -> CompletionResponse:
+    def complete(self, prompt: str, image_documents: Sequence[ImageDocument], **kwargs: Any) -> CompletionResponse:
         """
         Completes a task based on a text prompt and optional images.
         The method prepares inputs and generates the corresponding text.
         """
-        prepared_inputs = self._messages_to_prompt(
-            [ChatMessage(role="user", content=prompt)], image_documents
-        )
+        prepared_inputs = self._messages_to_prompt([ChatMessage(role="user", content=prompt)], image_documents)
         generated_text = self._generate(prepared_inputs)
         return CompletionResponse(text=generated_text)
 
-    def stream_complete(
-        self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any
-    ) -> CompletionResponseGen:
+    def stream_complete(self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any) -> CompletionResponseGen:
         """Streaming completion endpoint."""
         from transformers import TextIteratorStreamer
 
-        prepared_inputs = self._messages_to_prompt(
-            [ChatMessage(role="user", content=prompt)], image_documents
-        )
+        prepared_inputs = self._messages_to_prompt([ChatMessage(role="user", content=prompt)], image_documents)
 
-        streamer = TextIteratorStreamer(
-            self._tokenizer, skip_prompt=True, skip_special_tokens=True
-        )
+        streamer = TextIteratorStreamer(self._tokenizer, skip_prompt=True, skip_special_tokens=True)
         generation_kwargs = dict(
             prepared_inputs,
             streamer=streamer,
@@ -196,35 +172,17 @@ class OpenVINOPhi3MultiModal(MultiModalLLM):
             raw={"model_output": generated_text},
         )
 
-    async def astream_chat(
-        self, messages: Sequence[ChatMessage], **kwargs: Any
-    ) -> ChatResponseAsyncGen:
-        raise NotImplementedError(
-            "OpenVINOMultiModal does not support async streaming chat yet."
-        )
+    async def astream_chat(self, messages: Sequence[ChatMessage], **kwargs: Any) -> ChatResponseAsyncGen:
+        raise NotImplementedError("OpenVINOMultiModal does not support async streaming chat yet.")
 
-    async def astream_complete(
-        self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any
-    ) -> CompletionResponseAsyncGen:
-        raise NotImplementedError(
-            "HuggingFaceMultiModal does not support async streaming completion yet."
-        )
+    async def astream_complete(self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any) -> CompletionResponseAsyncGen:
+        raise NotImplementedError("HuggingFaceMultiModal does not support async streaming completion yet.")
 
-    async def acomplete(
-        self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any
-    ) -> CompletionResponse:
-        raise NotImplementedError(
-            "OpenVINOMultiModal does not support async completion yet."
-        )
+    async def acomplete(self, prompt: str, image_documents: Sequence[ImageNode], **kwargs: Any) -> CompletionResponse:
+        raise NotImplementedError("OpenVINOMultiModal does not support async completion yet.")
 
-    async def achat(
-        self, messages: Sequence[ChatMessage], **kwargs: Any
-    ) -> ChatResponse:
+    async def achat(self, messages: Sequence[ChatMessage], **kwargs: Any) -> ChatResponse:
         raise NotImplementedError("OpenVINOMultiModal does not support async chat yet.")
 
-    async def stream_chat(
-        self, messages: Sequence[ChatMessage], **kwargs: Any
-    ) -> ChatResponse:
-        raise NotImplementedError(
-            "OpenVINOMultiModal does not support async streaming chat yet."
-        )
+    async def stream_chat(self, messages: Sequence[ChatMessage], **kwargs: Any) -> ChatResponse:
+        raise NotImplementedError("OpenVINOMultiModal does not support async streaming chat yet.")
