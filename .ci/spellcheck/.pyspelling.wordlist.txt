@@ -600,6 +600,7 @@ OpenVINO
 openvino
 OpenVino
 OpenVINO's
+OpenVINOMultiModal
 openvoice
 OpenVoice
 OpenVoiceBaseClass
