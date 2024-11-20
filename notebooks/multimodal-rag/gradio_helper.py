@@ -46,12 +46,9 @@ def make_demo(
 
         with gr.Row():
             with gr.Column(scale=1):
-                video_file = gr.File(
+                video_file = gr.Video(
                     label="Step 1: Load a '.mp4' video file",
                     value=example_path,
-                    file_types=[
-                        ".mp4",
-                    ],
                 )
                 load_video = gr.Button("Step 2: Build Vector Store", variant="primary")
                 status = gr.Textbox(
@@ -61,7 +58,7 @@ def make_demo(
                     interactive=False,
                 )
 
-            with gr.Column(scale=4):
+            with gr.Column(scale=3):
                 chatbot = gr.Chatbot(
                     height=800,
                     label="Step 3: Input Query",
