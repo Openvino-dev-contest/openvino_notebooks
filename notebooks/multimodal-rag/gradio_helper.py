@@ -31,7 +31,6 @@ def make_demo(
     build_index: Callable,
     search: Callable,
     run_fn: Callable,
-    load_img: Callable,
     stop_fn: Callable,
 ):
 
@@ -103,12 +102,6 @@ def make_demo(
                 chatbot,
                 queue=True,
             )
-            .then(
-                load_img,
-                [chatbot, image_list],
-                chatbot,
-                queue=True,
-            )
         )
         submit_click_event = (
             submit.click(handle_user_message, [msg, chatbot], [msg, chatbot], queue=False)
@@ -121,12 +114,6 @@ def make_demo(
             .then(
                 run_fn,
                 [chatbot, image_list, txt_list],
-                chatbot,
-                queue=True,
-            )
-            .then(
-                load_img,
-                [chatbot, image_list],
                 chatbot,
                 queue=True,
             )
