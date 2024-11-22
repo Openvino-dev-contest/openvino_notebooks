@@ -237,6 +237,7 @@ DreamBooth Tsinghua
 Dreamshaper
 dropdown
 DynamiCrafter
+EasyOCR
 ECCV
 editability
 EfficientNet
@@ -248,6 +249,7 @@ embeddings
 EnCodec
 encodec
 english
+ENLSP
 enum
 et
 Evol
@@ -258,6 +260,7 @@ Explainer
 facto
 fastcomposer
 FastComposer
+FastDraft
 FastSAM
 FC
 feedforward
@@ -282,6 +285,7 @@ freevc
 frisbee
 Frontend
 frontend
+FX
 GAN
 Gante
 Gaudi
@@ -318,6 +322,7 @@ GroundedSAM
 GroundingDINO
 gRPC
 Gu
+GUIs
 Gutendex
 Hafner
 HugginFaceH
@@ -355,7 +360,6 @@ impactful
 IMU
 IMUs
 InceptionResNetV
-intialization
 inferencing
 InferRequest
 InferRequests
@@ -370,6 +374,7 @@ instantiation
 InstructGPT
 InstructPix
 intel
+interactable
 InternLM
 internlm
 Interpolative
@@ -414,6 +419,7 @@ Kosaraju
 kosmos
 Kosmos
 KOSMOS
+Kozlov
 KServe
 Kubernetes
 Kupyn
@@ -469,11 +475,12 @@ Lyth
 MaaS
 macOS
 Magika
-masklet
 Mahalanobis
+Mamou
 Mapillary
 Markovian
 Martyniuk
+masklet
 maskrcnn
 MaterialMLP
 MaterialNet
@@ -550,6 +557,7 @@ NEOX
 NER
 NETP
 Netron
+NeurIPS
 NeuSpell
 NeXT
 NLP
@@ -579,6 +587,7 @@ ocr
 OCRBench
 OCRv
 odometry
+OmniParser
 OMZ
 OneFormer
 oneformer
@@ -917,6 +926,7 @@ TorchMetrics
 TorchScript
 torchvision
 TorchVision
+TorchFX
 transformative
 triplane
 TriplaneLearnablePositionalEmbedding
@@ -1016,6 +1026,7 @@ Würstchen
 XAI
 XCode
 Xeon
+xformers
 xl
 xt
 xvector
@@ -1035,4 +1046,3 @@ ZeroScope
 zeroscope
 Zhipu
 zh
-xformers

@@ -127,6 +127,10 @@
         - ubuntu-20.04
         - ubuntu-22.04
         - windows-2019
+- notebook: notebooks/stable-diffusion-v3/stable-diffusion-v3-torch-fx.ipynb
+  skips:
+    - os:
+        - macos-12
 - notebook: notebooks/segment-anything/segment-anything.ipynb
   skips:
     - os:
@@ -524,13 +528,6 @@
 - notebook: notebooks/phi-3-vision/phi-3-vision.ipynb
   skips:
       - os:
-        - macos-12
-        - ubuntu-20.04
-        - ubuntu-22.04
-        - windows-2019
-- notebook: notebooks/internvl2/internvl2.ipynb
-  skips:
-    - os:
         - macos-12
         - ubuntu-20.04
         - ubuntu-22.04
