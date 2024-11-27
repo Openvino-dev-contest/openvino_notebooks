@@ -3,7 +3,7 @@ import gradio as gr
 
 examples = [
     ["Tell me more about gaussian function"],
-    ["Show me the formula of gaussian function"],
+    ["Explain the formula of gaussian function to me"],
     ["What is the Herschel Maxwell derivation of a Gaussian ?"],
 ]
 
