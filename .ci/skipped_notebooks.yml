@@ -566,3 +566,7 @@
   skips:
     - os:
         - macos-13
+- notebook: notebooks/llm-agent-react/llm-agent-react-genai.ipynb
+  skips:
+    - os:
+        - macos-13
